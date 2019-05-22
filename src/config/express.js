@@ -5,7 +5,6 @@ const compress = require('compression');
 const methodOverride = require('method-override');
 const cors = require('cors');
 const helmet = require('helmet');
-const cookieSession = require('cookie-session');
 const passport = require('passport');
 const routes = require('../api/routes/v1');
 const { logs } = require('./vars');
@@ -37,23 +36,11 @@ app.use(helmet());
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
 
-app.use(cookieSession({
-  name: 'session',
-  path: '/',
-  keys: [
-    'askdhaluu3h1heiuh1',
-    /* secret keys */
-  ],
-
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000, // 24 hours
-}));
-
 // enable authentication
 app.use(passport.initialize());
 
 // // enable authentication
-app.use(passport.session());
+// app.use(passport.session());
 
 // mount api v1 routes
 app.use('/', routes);

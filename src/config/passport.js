@@ -23,11 +23,13 @@ function configurePassport({ Issuer }) {
     });
   });
 
+  const openid = authProviders.configStrategy(Client, (tokenSet, userInfo, done) => {
+    done(null, { ...userInfo, sec: tokenSet });
+  });
+
   return {
     bearer,
-    openid: authProviders.configStrategy(Client, (tokenSet, userInfo, done) => {
-      done(null, { ...userInfo, sec: tokenSet });
-    }),
+    openid,
   };
 }
 
