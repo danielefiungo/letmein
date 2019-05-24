@@ -1,4 +1,4 @@
-const { Issuer, Strategy: OpenIDStrategy } = require('openid-client');
+const { Issuer, Strategy: OpenIDStrategy, custom } = require('openid-client');
 const { openId } = require('../../config/vars');
 
 const discoverIssuer = async (issuerConfigEndpoint) => {
@@ -12,7 +12,11 @@ const discoverIssuer = async (issuerConfigEndpoint) => {
  *
  * @param {Issuer} issuer
  */
-const buildClient = issuer => new issuer.Client(openId);
+const buildClient = (issuer) => {
+  const client = new issuer.Client(openId);
+  client[custom.clock_tolerance] = 5;
+  return client;
+};
 
 /**
  *
@@ -21,6 +25,6 @@ const buildClient = issuer => new issuer.Client(openId);
  * @param {Function} veryfyCallback
  */
 const configStrategy = (Client, verifyCallback) =>
-  new OpenIDStrategy({ client: Client }, verifyCallback);
+  new OpenIDStrategy({ client: Client, params: { scope: 'openid email profile offline_access' } }, verifyCallback);
 
 module.exports = { discoverIssuer, buildClient, configStrategy };

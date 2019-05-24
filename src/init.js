@@ -23,5 +23,5 @@ module.exports = async function Init() {
 
   // listen to requests
   app.listen(port, () =>
-    logger.info(`server started on port ${port} (${env}) : http://localhost:${port}`));
+    logger.info(`server started on port ${port} (${env}) : http://localhost:${port}/auth/login`));
 };

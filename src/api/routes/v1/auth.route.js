@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieSession = require('cookie-session');
+const jwt = require('jsonwebtoken');
 // const validate = require('express-validation');
 // const controller = require('../../controllers/auth.controller');
 const passport = require('passport');
@@ -19,9 +20,20 @@ router.use(cookieSession({
 
 router.route('/login').get(passport.authenticate('openid'));
 
-router.route('/callback').get(passport.authenticate('openid'), (req, res, next) => {
-  console.log(req.session.inspect());
-  res.json(req.user);
+router.route('/callback').get((req, res, next) => {
+  passport.authenticate('openid', { session: false }, (err, user, info) => {
+    if (err) {
+      if (err.name === 'Error') {
+        return res.redirect('/login');
+      }
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect('/login');
+    }
+
+    return res.json({ ...user, _access_token: jwt.decode(user.access_token), _id_token: jwt.decode(user.id_token) });
+  })(req, res, next);
 });
 
 module.exports = router;

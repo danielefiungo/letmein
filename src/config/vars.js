@@ -16,6 +16,7 @@ module.exports = {
     client_secret: process.env.CLIENT_SECRET,
     redirect_uris: [process.env.AUTH_CALLBACK_URL],
     openIdConfigEndpoint: process.env.OPENID_ENDPOINT_CONFIGURATION,
+    response_types: ['code'],
   },
   mongo: {
     uri: process.env.NODE_ENV === 'test' ? process.env.MONGO_URI_TESTS : process.env.MONGO_URI,
