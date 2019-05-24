@@ -11,7 +11,6 @@
     "yarn": "*"
   },
   "scripts": {
-    "precommit": "yarn lint",
     "prestart": "yarn docs",
     "start": "cross-env NODE_ENV=production pm2 start ./src/index.js",
     "dev-p": "nodemon ./src/index.js | pino-pretty -c",
@@ -25,7 +24,6 @@
     "test:watch": "cross-env NODE_ENV=test mocha --watch src/api/tests/unit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "postcoverage": "opn coverage/lcov-report/index.html",
-    "validate": "yarn lint && yarn test",
     "postpublish": "git push --tags",
     "deploy": "sh ./deploy.sh",
     "docs": "apidoc -i src -o docs",
@@ -34,6 +32,11 @@
     "docker:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up",
     "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
     "docker:test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "repository": {
     "type": "git",
@@ -76,6 +79,7 @@
     "express-pino-logger": "^4.0.0",
     "express-validation": "^1.0.2",
     "helmet": "^3.5.0",
+    "http-proxy-middleware": "^0.19.1",
     "http-status": "^1.0.1",
     "joi": "^10.4.1",
     "jsonwebtoken": "^8.5.1",
@@ -101,13 +105,17 @@
     "coveralls": "^3.0.0",
     "eslint": "^5.3.0",
     "eslint-config-airbnb-base": "^12.0.1",
+    "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "husky": "^0.14.3",
     "mocha": "^3.3.0",
     "nodemon": "^1.11.0",
     "nyc": "^12.0.2",
     "opn-cli": "^3.1.0",
     "pino-pretty": "^3.0.0",
+    "prettier": "1.17.1",
+    "pretty-quick": "^1.11.0",
     "sinon": "^6.0.0",
     "sinon-chai": "^3.0.0",
     "supertest": "^3.0.0"

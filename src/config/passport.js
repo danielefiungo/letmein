@@ -7,22 +7,25 @@ function configurePassport({ Issuer }) {
 
   const bearer = new BearerStrategy((token, done) => {
     Client.userinfo(token)
-      .then((user) => {
-        if (user) return done(null, { ...(jwt.decode(token)), ...user });
+      .then(user => {
+        if (user) return done(null, { ...jwt.decode(token), ...user });
         if (!user) {
           return done(null, false);
         }
         return done(null, user, { scope: 'all' });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         throw err;
       });
   });
 
-  const openid = authProviders.configStrategy(Client, (tokenSet, userInfo, done) => {
-    done(null, { ...userInfo, ...tokenSet });
-  });
+  const openid = authProviders.configStrategy(
+    Client,
+    (tokenSet, userInfo, done) => {
+      done(null, { ...userInfo, ...tokenSet });
+    }
+  );
 
   return {
     bearer,

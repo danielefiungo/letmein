@@ -9,5 +9,4 @@ router.route('/').get(passport.authenticate('bearer'), (req, res) => {
   res.json(req.user);
 });
 
-
 module.exports = router;

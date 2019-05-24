@@ -73,7 +73,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/register')
         .send(user)
         .expect(httpStatus.CREATED)
-        .then((res) => {
+        .then(res => {
           delete user.password;
           expect(res.body.token).to.have.a.property('accessToken');
           expect(res.body.token).to.have.a.property('refreshToken');
@@ -87,7 +87,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/register')
         .send(dbUser)
         .expect(httpStatus.CONFLICT)
-        .then((res) => {
+        .then(res => {
           const { field } = res.body.errors[0];
           const { location } = res.body.errors[0];
           const { messages } = res.body.errors[0];
@@ -103,7 +103,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/register')
         .send(user)
         .expect(httpStatus.BAD_REQUEST)
-        .then((res) => {
+        .then(res => {
           const { field } = res.body.errors[0];
           const { location } = res.body.errors[0];
           const { messages } = res.body.errors[0];
@@ -118,7 +118,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/register')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
-        .then((res) => {
+        .then(res => {
           const { field } = res.body.errors[0];
           const { location } = res.body.errors[0];
           const { messages } = res.body.errors[0];
@@ -135,7 +135,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/login')
         .send(dbUser)
         .expect(httpStatus.OK)
-        .then((res) => {
+        .then(res => {
           delete dbUser.password;
           expect(res.body.token).to.have.a.property('accessToken');
           expect(res.body.token).to.have.a.property('refreshToken');
@@ -149,7 +149,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/login')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
-        .then((res) => {
+        .then(res => {
           const { field } = res.body.errors[0];
           const { location } = res.body.errors[0];
           const { messages } = res.body.errors[0];
@@ -165,7 +165,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/login')
         .send(user)
         .expect(httpStatus.BAD_REQUEST)
-        .then((res) => {
+        .then(res => {
           const { field } = res.body.errors[0];
           const { location } = res.body.errors[0];
           const { messages } = res.body.errors[0];
@@ -181,7 +181,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/login')
         .send(dbUser)
         .expect(httpStatus.UNAUTHORIZED)
-        .then((res) => {
+        .then(res => {
           const { code } = res.body;
           const { message } = res.body;
           expect(code).to.be.equal(401);
@@ -289,7 +289,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/refresh-token')
         .send({ email: dbUser.email, refreshToken: refreshToken.token })
         .expect(httpStatus.OK)
-        .then((res) => {
+        .then(res => {
           expect(res.body).to.have.a.property('accessToken');
           expect(res.body).to.have.a.property('refreshToken');
           expect(res.body).to.have.a.property('expiresIn');
@@ -302,7 +302,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/refresh-token')
         .send({ email: user.email, refreshToken: refreshToken.token })
         .expect(httpStatus.UNAUTHORIZED)
-        .then((res) => {
+        .then(res => {
           const { code } = res.body;
           const { message } = res.body;
           expect(code).to.be.equal(401);
@@ -315,7 +315,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/refresh-token')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
-        .then((res) => {
+        .then(res => {
           const field1 = res.body.errors[0].field;
           const location1 = res.body.errors[0].location;
           const messages1 = res.body.errors[0].messages;
@@ -338,7 +338,7 @@ describe('Authentication API', () => {
         .post('/v1/auth/refresh-token')
         .send({ email: dbUser.email, refreshToken: expiredRefreshToken.token })
         .expect(httpStatus.UNAUTHORIZED)
-        .then((res) => {
+        .then(res => {
           expect(res.body.code).to.be.equal(401);
           expect(res.body.message).to.be.equal('Invalid refresh token.');
         });
